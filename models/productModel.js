@@ -1,4 +1,3 @@
-// productModel.js
 
 const mongoose = require('mongoose');
 
@@ -7,9 +6,9 @@ const ProductSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please enter product name"],
     },
-    vendor: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Vendor'
+    vendorName: {
+        type: String,
+        required: [true, "Please enter vendor name"],
     }
 });
 

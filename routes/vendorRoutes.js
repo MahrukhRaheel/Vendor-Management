@@ -1,5 +1,3 @@
-// vendorRoutes.js
-
 const express = require('express');
 const router = express.Router();
 const Vendor = require('../models/vendorModel');
@@ -16,13 +14,13 @@ router.post('/', async (req, res) => {
 });
 
 // Delete a vendor
-router.delete('/:id', async (req, res) => {
+router.delete('/:_id', async (req, res) => {
     try {
-        const vendor = await Vendor.findById(req.params.id);
+        const vendor = await Vendor.findById(req.params._id);
         if (!vendor) {
             return res.status(404).json({ message: 'Vendor not found' });
         }
-        await Vendor.deleteOne({ _id: req.params.id });
+        await Vendor.deleteOne({ _id: req.params._id });
         res.json({ message: 'Vendor deleted' });
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -30,9 +28,9 @@ router.delete('/:id', async (req, res) => {
 });
 
 // Update a vendor
-router.put('/:id', async (req, res) => {
+router.put('/:_id', async (req, res) => {
     try {
-        const vendor = await Vendor.findById(req.params.id);
+        const vendor = await Vendor.findById(req.params._id);
         if (!vendor) {
             return res.status(404).json({ message: 'Vendor not found' });
         }
@@ -43,6 +41,7 @@ router.put('/:id', async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 });
+
 // Get all vendors
 router.get('/', async (req, res) => {
     try {
@@ -52,4 +51,5 @@ router.get('/', async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 });
+
 module.exports = router;

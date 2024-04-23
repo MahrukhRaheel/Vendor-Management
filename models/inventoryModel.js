@@ -1,5 +1,3 @@
-// inventoryModel.js
-
 const mongoose = require('mongoose');
 const autopopulate = require('mongoose-autopopulate');
 
@@ -11,19 +9,29 @@ const InventorySchema = new mongoose.Schema({
         ref: 'Product',
         required: true
     },
+    vendor: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Vendor',
+        required: true
+    },
     quantity: {
         type: Number,
         required: true
     }
 });
 
-// Populate the product field with data from the referenced Product document
 InventorySchema.virtual('productName', {
     ref: 'Product',
     localField: 'product',
     foreignField: '_id',
     justOne: true,
-    autopopulate: true
+});
+
+InventorySchema.virtual('vendorName', {
+    ref: 'Vendor',
+    localField: 'vendor',
+    foreignField: '_id',
+    justOne: true,
 });
 
 module.exports = mongoose.model('Inventory', InventorySchema);

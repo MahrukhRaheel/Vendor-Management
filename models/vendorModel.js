@@ -1,4 +1,3 @@
-// vendorModel.js
 
 const mongoose = require('mongoose');
 
