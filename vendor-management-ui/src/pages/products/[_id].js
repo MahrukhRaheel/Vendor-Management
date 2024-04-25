@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import Router from 'next/router';
 import Link from 'next/link';
+import "../../app/globals.css";
+
 
 const EditProduct = ({ _id }) => { 
   const [name, setName] = useState('');
@@ -14,18 +16,22 @@ const EditProduct = ({ _id }) => {
       try {
         const response = await axios.get(`http://localhost:3000/products/${_id}`);
         const { name, vendorName } = response.data; 
-         setName(name);
+        setName(name);
         setVendor(vendorName);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching product:', error);
-        alert('Failed to fetch product details');
+        console.log('Error response status:', error.response ? error.response.status : 'N/A');
         setLoading(false);
       }
     };
-    fetchProduct();
+  
+    if (_id) {
+      fetchProduct();
+    }
   }, [_id]);
-
+  
+  
   const handleUpdate = async (event) => {
     event.preventDefault();
     try {

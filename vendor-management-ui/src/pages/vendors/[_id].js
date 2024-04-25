@@ -1,13 +1,15 @@
-
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import "../../app/globals.css";
+
 
 const VendorDetails = () => {
     const router = useRouter();
     const { _id } = router.query; 
 
-    const [vendor, setVendor] = useState('');
+
+    const [vendor, setVendor] = useState({ name: '' });
 
     useEffect(() => {
         const fetchVendor = async () => {
@@ -42,8 +44,6 @@ const VendorDetails = () => {
             console.error('Error deleting vendor:', error);
         }
     };
-
-    if (!vendor) return <div>Loading...</div>;
 
     return (
         <div>

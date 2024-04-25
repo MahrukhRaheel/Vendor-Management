@@ -1,27 +1,29 @@
 import axios from 'axios';
 import Link from 'next/link';
+import "../../app/globals.css";
 
 
 const InventoryPage = ({ inventoryItems }) => {
   return (
     <div>
-      <h1>Inventory</h1>
-      <table>
+       <h1 className="text-3xl font-bold text-center mb-4  text-black
+  py-2 px-4 rounded">Inventory</h1>
+      <table className="table-auto">
         <thead>
           <tr>
-            <th>Vendor Name</th>
-            <th>Product Name</th>
-            <th>Quantity</th>
-            <th>Edit</th>
+            <th className="px-4 py-2">Vendor Name</th>
+            <th className="px-4 py-2">Product Name</th>
+            <th className="px-4 py-2">Quantity</th>
+            <th className="px-4 py-2">Edit</th>
           </tr>
         </thead>
         <tbody>
           {inventoryItems.map(item => (
             <tr key={item._id}>
-              <td>{item.vendor}</td>
-              <td>{item.product}</td>
-              <td>{item.quantity}</td>
-              <td>
+              <td className="border px-4 py-2">{item.vendor}</td>
+              <td className="border px-4 py-2">{item.product}</td>
+              <td className="border px-4 py-2">{item.quantity}</td>
+              <td className="border px-4 py-2">
                 <Link href={`/inventory/${item._id}`}>
                   <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     Edit
@@ -33,8 +35,13 @@ const InventoryPage = ({ inventoryItems }) => {
         </tbody>
       </table>
       <Link href="/inventory/add">
-        <button className="mt-4 inline-block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+        <button className="mt-4 inline-block bg-green-500 hover:bg-green-700 text-black font-bold py-2 px-4 rounded">
           Add New Inventory Item
+        </button>
+      </Link>
+      <Link href="/">
+        <button className="mt-4 inline-block bg-gray-500 hover:bg-gray-700 text-black font-bold py-2 px-4 rounded">
+          Back to HomePage
         </button>
       </Link>
     </div>

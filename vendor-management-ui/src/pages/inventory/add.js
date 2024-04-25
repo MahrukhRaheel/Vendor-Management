@@ -2,6 +2,8 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import Router from 'next/router';
+import "../../app/globals.css";
+
 
 const AddInventoryItem = () => {
   const [productName, setProductName] = useState('');

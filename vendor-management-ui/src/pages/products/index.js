@@ -1,10 +1,13 @@
 import axios from 'axios';
 import Link from 'next/link';
+import "../../app/globals.css";
+
 
 const ProductsPage = ({ products }) => {
   return (
     <div>
-      <h1>Products</h1>
+       <h1 className="text-3xl font-bold text-center mb-4  text-black
+  py-2 px-4 rounded">Products</h1>
       <table className="min-w-full divide-y divide-gray-200">
         <thead>
           <tr>
@@ -29,6 +32,11 @@ const ProductsPage = ({ products }) => {
       </table>
       <Link href="/products/add">
         <button className="mt-4 inline-block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Add New Product</button>
+      </Link>
+      <Link href="/">
+        <button className="mt-4 inline-block bg-gray-500 hover:bg-gray-700 text-black font-bold py-2 px-4 rounded">
+          Back to HomePage
+        </button>
       </Link>
     </div>
   );
