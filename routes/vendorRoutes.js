@@ -1,55 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const Vendor = require('../models/vendorModel');
+const vendorController = require('../controllers/vendorController');
 
-// Add a new vendor
-router.post('/', async (req, res) => {
-    try {
-        const vendor = new Vendor(req.body);
-        await vendor.save();
-        res.status(201).json(vendor);
-    } catch (err) {
-        res.status(400).json({ message: err.message });
-    }
-});
-
-// Delete a vendor
-router.delete('/:_id', async (req, res) => {
-    try {
-        const vendor = await Vendor.findById(req.params._id);
-        if (!vendor) {
-            return res.status(404).json({ message: 'Vendor not found' });
-        }
-        await Vendor.deleteOne({ _id: req.params._id });
-        res.json({ message: 'Vendor deleted' });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
-
-// Update a vendor
-router.put('/:_id', async (req, res) => {
-    try {
-        const vendor = await Vendor.findById(req.params._id);
-        if (!vendor) {
-            return res.status(404).json({ message: 'Vendor not found' });
-        }
-        Object.assign(vendor, req.body);
-        await vendor.save();
-        res.json(vendor);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
-
-// Get all vendors
-router.get('/', async (req, res) => {
-    try {
-        const vendors = await Vendor.find();
-        res.json(vendors);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
+router.post('/', vendorController.addVendor);
+router.delete('/:_id', vendorController.deleteVendor);
+router.get('/:_id', vendorController.getVendor);
+router.put('/:_id', vendorController.updateVendor);
+router.get('/', vendorController.getAllVendors);
 
 module.exports = router;

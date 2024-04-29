@@ -19,7 +19,6 @@ const InventorySchema = new mongoose.Schema({
         required: true
     }
 });
-
 InventorySchema.virtual('productName', {
     ref: 'Product',
     localField: 'product',

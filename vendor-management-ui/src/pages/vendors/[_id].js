@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -46,23 +47,27 @@ const VendorDetails = () => {
     };
 
     return (
-        <div>
-            <form onSubmit={handleUpdate}>
-                <label htmlFor="name">Vendor Name:</label>
-                <input
-                    id="name"
-                    type="text"
-                    value={vendor.name}
-                    onChange={(e) => setVendor({ ...vendor, name: e.target.value })}
-                    className="border px-2 py-1"
-                />
-                <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Update Vendor
-                </button>
-            </form>
-            <button onClick={handleDelete} className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                Delete Vendor
-            </button>
+        <div className="flex flex-col items-center justify-center h-screen">
+            <div>
+                <form onSubmit={handleUpdate} className="mb-4">
+                    <label htmlFor="name">Vendor Name : </label>
+                    <input
+                        id="name"
+                        type="text"
+                        value={vendor.name || ""} 
+                        onChange={(e) => setVendor({ ...vendor, name: e.target.value })}
+                        className="border border-black px-2 py-1 mb-2"
+                    />
+                    <div className="flex space-x-4">
+                        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Update Vendor
+                        </button>
+                        <button onClick={handleDelete} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                            Delete Vendor
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };

@@ -2,11 +2,15 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import Router from 'next/router';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import "../../app/globals.css";
 
 
-const EditProduct = ({ _id }) => { 
+const EditProduct = () => { 
+  const router = useRouter();
+  const { _id } = router.query; 
+
   const [name, setName] = useState('');
   const [vendor, setVendor] = useState('');
   const [loading, setLoading] = useState(true);
@@ -64,7 +68,7 @@ const EditProduct = ({ _id }) => {
           <input
             id="name"
             type="text"
-            value={name}
+            value={name} 
             onChange={(e) => setName(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
@@ -74,7 +78,7 @@ const EditProduct = ({ _id }) => {
           <input
             id="vendor"
             type="text"
-            value={vendor}
+            value={vendor} 
             onChange={(e) => setVendor(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />

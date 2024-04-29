@@ -4,105 +4,112 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import "../../app/globals.css";
 
-
 const InventoryItemDetails = () => {
     const router = useRouter();
+    const { _id } = router.query; 
 
-    const [inventoryItem, setInventoryItem] = useState('');
+    const [productName, setProductName] = useState('');
+    const [vendorName, setVendorName] = useState('');
+    const [quantity, setQuantity] = useState(0);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchInventoryItem = async () => {
             try {
-                const result = await axios.get(`http://localhost:3000/inventory/${router.query._id}`);
-                setInventoryItem(result.data);
+                const response = await axios.get(`http://localhost:3000/inventory/${_id}`);
+                const { product, vendor, quantity } = response.data; 
+
+                // Fetch product name
+                const productResponse = await axios.get(`http://localhost:3000/products/${product}`);
+                const productName = productResponse.data.name;
+
+                // Fetch vendor name
+                const vendorResponse = await axios.get(`http://localhost:3000/vendors/${vendor}`);
+                const vendorName = vendorResponse.data.name;
+
+                setProductName(productName);
+                setVendorName(vendorName);
+                setQuantity(quantity);
+                setLoading(false);
             } catch (error) {
+                setLoading(false);
                 console.error('Error fetching inventory item:', error);
             }
         };
-
-        if (router.query._id) {
+        
+        if (_id) {
             fetchInventoryItem();
         }
-    }, [router.query._id]);
+    }, [_id]);
 
     const handleUpdate = async (event) => {
         event.preventDefault();
         try {
-            console.log('Updating inventory item...');
-            const response = await axios.put(`http://localhost:3000/inventory/${router.query._id}`, inventoryItem);
-            setInventoryItem(response.data); // Update local state with the updated data
+            await axios.put(`http://localhost:3000/inventory/${_id}`, { productName, vendorName, quantity });
             router.push('/inventory');
         } catch (error) {
             console.error('Error updating inventory item:', error);
         }
     };
-    
 
     const handleDelete = async () => {
         try {
-            await axios.delete(`http://localhost:3000/inventory/${router.query._id}`);
+            await axios.delete(`http://localhost:3000/inventory/${_id}`);
             router.push('/inventory');
         } catch (error) {
             console.error('Error deleting inventory item:', error);
         }
     };
 
-    const handleChange = (event) => {
-        setInventoryItem({ ...inventoryItem, [event.target.name]: event.target.value });
-    };
+    if (loading) return <p>Loading...</p>;
 
     return (
-        <div>
-            <div className="mb-4">
-                <label htmlFor="productName">Product Name:</label>
-                <input
-                    id="productName"
-                    name="productName"
-                    type="text"
-                    value={inventoryItem.productName}
-                    onChange={handleChange}
-                    className="border px-2 py-1"
-                />
-            </div>
-            <div className="mb-4">
-                <label htmlFor="vendorName">Vendor Name:</label>
-                <input
-                    id="vendorName"
-                    name="vendorName"
-                    type="text"
-                    value={inventoryItem.vendorName}
-                    onChange={handleChange}
-                    className="border px-2 py-1"
-                />
-            </div>
-            <div className="mb-4">
-                <label htmlFor="quantity">Quantity:</label>
-                <input
-                    id="quantity"
-                    name="quantity"
-                    type="number"
-                    value={inventoryItem.quantity}
-                    onChange={handleChange}
-                    className="border px-2 py-1"
-                />
-            </div>
-            <div className="flex">
-                <form onSubmit={handleUpdate} className="mr-4">
-                    <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded">
-                        Update
-                    </button>
-                </form>
-                <button onClick={handleDelete} className="bg-red-500 hover:bg-red-700 text-black font-bold py-2 px-4 rounded">
-                    Delete
+        <div className="max-w-xl mx-auto p-4">
+            <h1>Edit Product</h1>
+            <form onSubmit={handleUpdate}>
+                <div className="mb-4">
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">Product Name:</label>
+                    <input
+                        id="name"
+                        type="text"
+                        value={productName} 
+                        onChange={(e) => setProductName(e.target.value)}
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    />
+                </div>
+                <div className="mb-4">
+                    <label htmlFor="vendor" className="block text-sm font-medium text-gray-700">Vendor Name:</label>
+                    <input
+                        id="vendor"
+                        type="text"
+                        value={vendorName} 
+                        onChange={(e) => setVendorName(e.target.value)}
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    />
+                </div>
+                <div className="mb-4">
+                    <label htmlFor="quantity">Quantity:</label>
+                    <input
+                        id="quantity"
+                        name="quantity"
+                        type="number"
+                        value={quantity}
+                        onChange={(e) => setQuantity(e.target.value)}
+                        className="border px-2 py-1"
+                    />
+                </div>
+                <button type="submit" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-black bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Update Product
                 </button>
-            </div>
-            <div>
-                <button onClick={() => router.push('/inventory')} className="mt-4 inline-block bg-gray-500 hover:bg-gray-700 text-black font-bold py-2 px-4 rounded">
-                    Back to Inventory
-                </button>
-            </div>
+            </form>
+            <button onClick={handleDelete} className="bg-red-500 hover:bg-red-700 text-black font-bold py-2 px-4 rounded">
+                Delete
+            </button>
+            <button onClick={() => router.push('/inventory')} className="mt-4 inline-block bg-gray-500 hover:bg-gray-700 text-black font-bold py-2 px-4 rounded">
+                Back to Inventory
+            </button>
         </div>
     );
 };    
 
-export default InventoryItemDetails; 
+export default InventoryItemDetails;

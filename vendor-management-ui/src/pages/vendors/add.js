@@ -10,7 +10,7 @@ const AddVendor = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
+    try { //if name is empty
     await axios.post('http://localhost:3000/vendors', { name });
     Router.push('/vendors');
     } catch (error) {

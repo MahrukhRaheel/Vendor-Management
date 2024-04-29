@@ -1,13 +1,25 @@
-
 import axios from 'axios';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Router from 'next/router';
 import "../../app/globals.css";
-
 
 const AddProduct = () => {
   const [name, setName] = useState('');
   const [vendor, setVendor] = useState('');
+  const [vendors, setVendors] = useState([]);
+
+  useEffect(() => {
+    const fetchVendors = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/vendors');
+        setVendors(response.data);
+      } catch (error) {
+        console.error('Error fetching vendors:', error);
+      }
+    };
+
+    fetchVendors();
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -33,14 +45,18 @@ const AddProduct = () => {
         />
       </div>
       <div className="mb-4">
-        <label htmlFor="vendorName" className="block text-sm font-medium text-gray-700">Vendor Name:</label>
-        <input
-          id="vendorName"
-          type="text"
+        <label htmlFor="vendor" className="block text-sm font-medium text-gray-700">Vendor Name:</label>
+        <select
+          id="vendor"
           value={vendor}
           onChange={(e) => setVendor(e.target.value)}
           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-        />
+        >
+          <option value="">Select Vendor</option>
+          {vendors.map(vendor => (
+            <option key={vendor._id} value={vendor.name}>{vendor.name}</option>
+          ))}
+        </select>
       </div>
       <button type="submit" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
         Add Product

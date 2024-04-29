@@ -5,39 +5,46 @@ import "../../app/globals.css";
 
 const ProductsPage = ({ products }) => {
   return (
-    <div>
-       <h1 className="text-3xl font-bold text-center mb-4  text-black
-  py-2 px-4 rounded">Products</h1>
-      <table className="min-w-full divide-y divide-gray-200">
+               <div className="flex flex-col items-center justify-center">
+       <h1 className="text-3xl font-bold text-center mb-4  text-black py-2 px-4 rounded">Products</h1>
+       <div className="w-full max-w-screen-md">
+
+       <table className="table-auto w-full border-collapse border border-black rounded-lg">
         <thead>
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vendor</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Edit</th>
+            <th className="px-4 py-2 border border-gray-500 text-left font-medium text-black uppercase">Product</th>
+            <th className="px-4 py-2 border border-gray-500 text-left font-medium text-black uppercase">Vendor</th>
+            <th className="px-4 py-2 border border-gray-500 text-left font-medium text-black uppercase">Edit</th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody>
           {products.map(product => (
             <tr key={product._id}>
-              <td className="px-6 py-4 whitespace-nowrap">{product.name}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{product.vendorName}</td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <Link href={`/products/${product._id}`}>
-                  <button className="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Edit</button>
-                </Link>
+              <td className="px-4 py-2 border border-gray-500 whitespace-nowrap">{product.name}</td>
+              <td className="px-4 py-2 border border-gray-500 whitespace-nowrap">{product.vendorName}</td>
+              <td className="px-4 py-2 border border-gray-500 whitespace-nowrap">
+              <Link href={`/products/${product._id}`}>
+                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+                      Edit
+                    </button>
+                  </Link>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+<div className="mt-4">
       <Link href="/products/add">
-        <button className="mt-4 inline-block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Add New Product</button>
+        <button className=" bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Add New Product</button>
       </Link>
       <Link href="/">
-        <button className="mt-4 inline-block bg-gray-500 hover:bg-gray-700 text-black font-bold py-2 px-4 rounded">
+        <button className="ml-4 bg-gray-500 hover:bg-gray-700 text-black font-bold py-2 px-4 rounded">
           Back to HomePage
         </button>
       </Link>
+    </div>
+    </div>
     </div>
   );
 };
